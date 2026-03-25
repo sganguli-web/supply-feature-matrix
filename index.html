@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supply Feature Matrix — Holiday Extras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --hx-purple: #542E91;
+      --hx-purple-dark: #3d1f6e;
+      --hx-purple-light: #6e44b0;
+      --hx-yellow: #FDDC06;
+      --hx-yellow-dark: #e0c200;
+      --body-bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--body-bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════════════
+       HEADER
+    ══════════════════════════════════════ */
+    header {
+      background: var(--hx-purple);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      box-shadow: 0 2px 12px rgba(84,46,145,.35);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    /* HX logo mark — a simple coloured "HX" badge */
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      background: var(--hx-yellow);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--hx-purple);
+      letter-spacing: -1px;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,.2);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .logo-text .brand {
+      font-size: 17px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .3px;
+    }
+
+    .logo-text .brand span {
+      color: var(--hx-yellow);
+    }
+
+    .logo-text .tagline {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: rgba(255,255,255,.65);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    .header-right {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,.55);
+      letter-spacing: .4px;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════
+       PAGE TITLE BAND
+    ══════════════════════════════════════ */
+    .page-title-band {
+      background: linear-gradient(135deg, var(--hx-purple-dark) 0%, var(--hx-purple) 60%, var(--hx-purple-light) 100%);
+      padding: 28px 32px 0;
+      border-bottom: 3px solid var(--hx-yellow);
+    }
+
+    .page-title-band h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: .2px;
+      margin-bottom: 4px;
+    }
+
+    .page-title-band h1 span {
+      color: var(--hx-yellow);
+    }
+
+    .page-title-band p {
+      font-size: 12.5px;
+      color: rgba(255,255,255,.65);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* ══════════════════════════════════════
+       TABS  (attached to title band)
+    ══════════════════════════════════════ */
+    .tab-nav {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .tab-btn {
+      padding: 10px 22px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      transition: background .18s, color .18s;
+      letter-spacing: .2px;
+      background: rgba(255,255,255,.15);
+      color: rgba(255,255,255,.75);
+      position: relative;
+      bottom: 0;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255,255,255,.25);
+      color: #fff;
+    }
+
+    .tab-btn.active {
+      background: var(--body-bg);
+      color: var(--hx-purple);
+      bottom: -3px;
+      padding-bottom: 13px;
+      border-bottom: 3px solid var(--body-bg);
+    }
+
+    /* ══════════════════════════════════════
+       MAIN CONTENT
+    ══════════════════════════════════════ */
+    .content-wrap {
+      padding: 32px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ══════════════════════════════════════
+       LEGEND
+    ══════════════════════════════════════ */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin-bottom: 28px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 18px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .dot-done       { background: #22c55e; }
+    .dot-progress   { background: #3b82f6; }
+    .dot-notstarted { background: #cbd5e1; border: 1px solid #94a3b8; }
+    .dot-paused     { background: #a16207; }
+    .dot-blocked    { background: #ef4444; }
+
+    /* ══════════════════════════════════════
+       SECTION
+    ══════════════════════════════════════ */
+    .section { margin-bottom: 30px; }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      padding-left: 12px;
+      border-left: 4px solid var(--hx-purple);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ══════════════════════════════════════
+       TABLE
+    ══════════════════════════════════════ */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+    }
+
+    thead th {
+      background: #f8fafc;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--text-muted);
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr { border-bottom: 1px solid #f1f5f9; transition: background .1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafbff; }
+
+    td {
+      padding: 10px 14px;
+      font-size: 13px;
+      vertical-align: top;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    td.capability { font-weight: 700; color: var(--text-primary); white-space: nowrap; }
+    td.requirement { max-width: 260px; }
+    td.notes { color: var(--text-muted); font-size: 12px; font-style: italic; max-width: 300px; }
+
+    /* ══════════════════════════════════════
+       STATUS PILLS
+    ══════════════════════════════════════ */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .status-done       { background: #dcfce7; color: #166534; }
+    .status-progress   { background: #dbeafe; color: #1e40af; }
+    .status-notstarted { background: #f1f5f9; color: #64748b; }
+    .status-paused     { background: #fef3c7; color: #92400e; }
+    .status-blocked    { background: #fee2e2; color: #991b1b; }
+
+    /* ══════════════════════════════════════
+       COVERAGE GRID
+    ══════════════════════════════════════ */
+    .coverage-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .coverage-grid-5 { grid-template-columns: repeat(5, 1fr); }
+    .coverage-grid-6 { grid-template-columns: repeat(5, 1fr); }
+
+    .coverage-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 16px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+      text-align: center;
+    }
+
+    .coverage-card .product-name {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .coverage-card .big-num {
+      font-size: 30px;
+      font-weight: 900;
+      color: var(--hx-purple);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .coverage-card .big-num span {
+      font-size: 12px;
+      font-weight: 500;
+      color: #94a3b8;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+      margin-top: 6px;
+    }
+
+    .badge {
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* coverage matrix table for Price Collector */
+    .cov-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+    }
+
+    .cov-matrix th {
+      background: #f8fafc;
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .7px;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cov-matrix th:first-child { text-align: left; }
+
+    .cov-matrix td {
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      border-bottom: 1px solid #f1f5f9;
+      color: var(--text-primary);
+    }
+
+    .cov-matrix td:first-child { text-align: left; font-weight: 700; }
+    .cov-matrix tr:last-child td { border-bottom: none; }
+    .cov-matrix tr:hover td { background: #fafbff; }
+
+    /* ══════════════════════════════════════
+       Q&A GRID
+    ══════════════════════════════════════ */
+    .qa-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .qa-card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07);
+    }
+
+    .qa-q {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .qa-a {
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    @media (max-width: 900px) {
+      .coverage-grid-5,
+      .coverage-grid-6 { grid-template-columns: repeat(3, 1fr); }
+      .qa-grid { grid-template-columns: 1fr; }
+      .content-wrap { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ -->
+<!-- HEADER                                -->
+<!-- ══════════════════════════════════════ -->
+<header>
+  <a class="header-logo" href="#">
+    <!-- Logo mark: try real HX SVG, fallback to styled badge -->
+    <div class="logo-mark" aria-hidden="true">HX</div>
+    <div class="logo-text">
+      <span class="brand">Holiday<span>Extras</span></span>
+      <span class="tagline">Less hassle. More holiday.</span>
+    </div>
+  </a>
+  <div class="header-right">Supply Engineering · Internal</div>
+</header>
+
+<!-- ══════════════════════════════════════ -->
+<!-- PAGE TITLE + TAB NAV                  -->
+<!-- ══════════════════════════════════════ -->
+<div class="page-title-band">
+  <h1>Supply <span>Feature Matrix</span></h1>
+  <p>Live capability tracker for Integration Gateway &amp; Price Collector · Last updated March 2026</p>
+  <nav class="tab-nav" role="tablist">
+    <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="ig">
+      Integration Gateway
+    </button>
+    <button class="tab-btn"        role="tab" aria-selected="false" data-tab="pc">
+      Price Collector
+    </button>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- TAB: INTEGRATION GATEWAY              -->
+<!-- ══════════════════════════════════════ -->
+<div class="content-wrap">
+
+  <div class="tab-panel active" id="tab-ig" role="tabpanel">
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><span class="dot dot-done"></span> Done</div>
+      <div class="legend-item"><span class="dot dot-progress"></span> In Progress</div>
+      <div class="legend-item"><span class="dot dot-notstarted"></span> Not Started</div>
+      <div class="legend-item"><span class="dot dot-paused"></span> Paused</div>
+      <div class="legend-item"><span class="dot dot-blocked"></span> Blocked</div>
+    </div>
+
+    <!-- 1 · Platform & Architectural Foundations -->
+    <div class="section">
+      <div class="section-title">1 · Platform &amp; Architectural Foundations</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Staging environment</td><td class="requirement">Permanent staging connected to supplier staging</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Environment config separation</td><td class="requirement">Different credentials per environment</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">No coupling to other systems</td><td class="requirement">Clean architecture, replaceable components</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes">We have to integrate into chips</td></tr>
+          <tr><td class="capability">Supplier agnostic design</td><td class="requirement">HX sees unified model only</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes">Hotels and transfers not proven yet</td></tr>
+          <tr><td class="capability">No legacy conventions surfaced</td><td class="requirement">CHIPS transformations abstracted</td><td><span class="status-pill status-notstarted">⚪ —</span></td><td class="notes">We have to integrate into hapi</td></tr>
+          <tr><td class="capability">Currency lowest unit enforced</td><td class="requirement">Pence/cents only, no default currency</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Security</td><td class="requirement">Conform to OWASP Top 10</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Have HX done pen tests and identified issues? HX took on this responsibility.</td></tr>
+          <tr><td class="capability">Full data for reporting</td><td class="requirement">All booking and availability data in GBQ</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Platform consolidation is in progress.</td></tr>
+          <tr><td class="capability">Config driven</td><td class="requirement">New supply does not require HX engineering</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Hard coded lists still present</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2 · Core Booking & Availability (API Layer) -->
+    <div class="section">
+      <div class="section-title">2 · Core Booking &amp; Availability Capabilities (API Layer)</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Versioned API</td><td class="requirement">Explicit versioning + rollback</td><td><span class="status-pill status-blocked">🔴 Blocked</span></td><td class="notes">Since moving to Dockyard this is no longer required</td></tr>
+          <tr><td class="capability">Changelog available</td><td class="requirement">Version differences documented</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Secure</td><td class="requirement">Strong auth used</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Uses standards</td><td class="requirement">Leveraging industry standards</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Error handling</td><td class="requirement">Well defined errors</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Investigation is currently underway</td></tr>
+          <tr><td class="capability">Protecting our customers</td><td class="requirement">Pass minimal PII to suppliers</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">We could pass less</td></tr>
+          <tr><td class="capability">No app-level filtering</td><td class="requirement">Except mapped products</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Meta information in response</td><td class="requirement">Supplier searched, cache used</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Multi-currency by default</td><td class="requirement">All schemas provide currency in use</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Status endpoint</td><td class="requirement">Health endpoint returns 200</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3 · Product Management (UI Layer) -->
+    <div class="section">
+      <div class="section-title">3 · Product Management (UI Layer)</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Enterprise authentication</td><td class="requirement">Google Auth</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">API first</td><td class="requirement">Pragmatic access to all UI functions</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Role based access control</td><td class="requirement">Functions limited by role</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Suppliers can be enabled/disabled</td><td class="requirement">—</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Product mapping</td><td class="requirement">For supplier locations</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Location mapping</td><td class="requirement">For suppliers</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4 · Booking Flow -->
+    <div class="section">
+      <div class="section-title">4 · Booking Flow</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Multi-supplier search</td><td class="requirement">Same product type</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Multi-location search</td><td class="requirement">Products at different locations</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Works for parking, not hotels?</td></tr>
+          <tr><td class="capability">Multi-product search</td><td class="requirement">Parking + lounge etc.</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes">Not working with parking and hotel</td></tr>
+          <tr><td class="capability">Single product search</td><td class="requirement">—</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Create booking with supplier</td><td class="requirement">Sync</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Transfers not supported yet</td></tr>
+          <tr><td class="capability">Amend booking with supplier</td><td class="requirement">Sync</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Transfers not supported yet</td></tr>
+          <tr><td class="capability">Cancel booking with supplier</td><td class="requirement">Sync</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Transfers not supported yet</td></tr>
+          <tr><td class="capability">Addon search with supplier</td><td class="requirement">—</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Update booking status</td><td class="requirement">In HX booking store</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Update supplier content</td><td class="requirement">In HX booking store</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Update supplier price</td><td class="requirement">In CHIPS</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Detect price mismatch</td><td class="requirement">—</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">ETA: 31st Mar</td></tr>
+          <tr><td class="capability">Apply discounting</td><td class="requirement">—</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Apply markup</td><td class="requirement">—</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 5 · Resilience & Outage Handling -->
+    <div class="section">
+      <div class="section-title">5 · Resilience &amp; Outage Handling</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Multiple bookings in parallel</td><td class="requirement">Can scale to handle traffic shape</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Needs sync work to finish</td></tr>
+          <tr><td class="capability">Queue booking during supplier outage</td><td class="requirement">Retry later</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">No data loss</td><td class="requirement">Unfulfilled bookings identifiable</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Booking decoupling</td><td class="requirement">Supplier reliability does not affect our reliability</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6 · Events & Data Streaming -->
+    <div class="section">
+      <div class="section-title">6 · Events &amp; Data Streaming</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Price/availability events</td><td class="requirement">Sent in real-time</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Events include meta</td><td class="requirement">Source + change reason</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Events for all availability</td><td class="requirement">Regardless of mapping</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Large-scale event handling</td><td class="requirement">Backfills/imports supported</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes">Has not been tested</td></tr>
+          <tr><td class="capability">UI change events</td><td class="requirement">Mapping changes tracked</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">No event loss</td><td class="requirement">Local queue fallback</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Single topic per env</td><td class="requirement">Provided by HX</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 7 · Data Reporting -->
+    <div class="section">
+      <div class="section-title">7 · Data Reporting</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Full data to HX data lake</td><td class="requirement">No UI reporting silos</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Do not have all UI info; B13 has their own booking store. Pending platform consolidation — moving audit trails to Google Cloud buckets.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 8 · Coverage -->
+    <div class="section">
+      <div class="section-title">8 · Coverage — Fully Integrated with B13</div>
+      <div class="coverage-grid coverage-grid-5">
+        <div class="coverage-card">
+          <div class="product-name">Carpark</div>
+          <div class="big-num">21 <span>suppliers</span></div>
+          <div class="badge-row">
+            <span class="badge">Availability</span><span class="badge">Bookings</span>
+            <span class="badge">Amendments</span><span class="badge">Cancellations</span>
+          </div>
+        </div>
+        <div class="coverage-card">
+          <div class="product-name">Hotels</div>
+          <div class="big-num">1 <span>supplier</span></div>
+          <div class="badge-row">
+            <span class="badge">Availability</span><span class="badge">Bookings</span>
+            <span class="badge">Amendments</span><span class="badge">Cancellations</span>
+          </div>
+        </div>
+        <div class="coverage-card">
+          <div class="product-name">Lounges</div>
+          <div class="big-num">0 <span>suppliers</span></div>
+          <div class="badge-row">
+            <span class="badge">Availability</span><span class="badge">Bookings</span>
+            <span class="badge">Amendments</span><span class="badge">Cancellations</span>
+          </div>
+        </div>
+        <div class="coverage-card">
+          <div class="product-name">Transfers</div>
+          <div class="big-num">1 <span>supplier</span></div>
+          <div class="badge-row">
+            <span class="badge">Availability</span><span class="badge">Bookings</span>
+            <span class="badge">Amendments</span><span class="badge">Cancellations</span>
+          </div>
+        </div>
+        <div class="coverage-card">
+          <div class="product-name">Fastrack</div>
+          <div class="big-num">0 <span>suppliers</span></div>
+          <div class="badge-row">
+            <span class="badge">Availability</span><span class="badge">Bookings</span>
+            <span class="badge">Amendments</span><span class="badge">Cancellations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 · Connectivity & Performance -->
+    <div class="section">
+      <div class="section-title">9 · Connectivity &amp; Performance</div>
+      <div class="qa-grid">
+        <div class="qa-card"><div class="qa-q">Are all connectors production-stable?</div><div class="qa-a">No</div></div>
+        <div class="qa-card"><div class="qa-q">Are there known performance constraints per supplier?</div><div class="qa-a">Yes — QuickParking is slow</div></div>
+        <div class="qa-card"><div class="qa-q">Do any suppliers impose blocking or long-running operations?</div><div class="qa-a">Yes — QuickParking, Apcoa BER and Hilton (sometimes)</div></div>
+        <div class="qa-card"><div class="qa-q">Do suppliers support idempotency for booking requests?</div><div class="qa-a">Yes</div></div>
+      </div>
+    </div>
+
+    <!-- 10 · Error Handling -->
+    <div class="section">
+      <div class="section-title">10 · Error Handling</div>
+      <div class="qa-grid">
+        <div class="qa-card"><div class="qa-q">How are supplier outages detected?</div><div class="qa-a">5xx HTTP status code is returned when sending requests to them.</div></div>
+        <div class="qa-card"><div class="qa-q">Is retry logic implemented at the connector layer or expected upstream (HX)?</div><div class="qa-a">Done — Retry mechanism is implemented on IG for async booking flow.</div></div>
+        <div class="qa-card" style="grid-column: span 2;"><div class="qa-q">Are there suppliers where availability/booking failures are common or require special handling?</div><div class="qa-a">Mostly parking suppliers like QuickParking (require VRN when entry date is close to current datetime) and ilogs (VRN format; same VRN cannot be used to book multiple parking lots in different entry/exit datetimes).</div></div>
+      </div>
+    </div>
+
+    <!-- 11 · Data Completeness & Constraints -->
+    <div class="section">
+      <div class="section-title">11 · Data Completeness &amp; Constraints</div>
+      <div class="qa-grid">
+        <div class="qa-card"><div class="qa-q">Are all supplier price/availability changes captured and pushed upstream?</div><div class="qa-a">Yes — Price mismatch event, availability event, and no-availability event are published.</div></div>
+        <div class="qa-card"><div class="qa-q">Are there suppliers where we rely on polling vs event-driven updates?</div><div class="qa-a">Yes — TransferZ for now. IG is moving from long polling to webhooks to track TransferZ's journey changes.</div></div>
+        <div class="qa-card"><div class="qa-q">Are there gaps in delta detection for pricing updates?</div><div class="qa-a">Yes — Price mismatch event will be published.</div></div>
+        <div class="qa-card"><div class="qa-q">Are there suppliers that would require significant rework to align with the target gateway model?</div><div class="qa-a">No</div></div>
+      </div>
+    </div>
+
+  </div><!-- /tab-ig -->
+
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- TAB: PRICE COLLECTOR                  -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="tab-panel" id="tab-pc" role="tabpanel">
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><span class="dot dot-done"></span> Done</div>
+      <div class="legend-item"><span class="dot dot-progress"></span> In Progress</div>
+      <div class="legend-item"><span class="dot dot-notstarted"></span> Not Started</div>
+      <div class="legend-item"><span class="dot dot-paused"></span> Paused</div>
+      <div class="legend-item"><span class="dot dot-blocked"></span> Blocked</div>
+    </div>
+
+    <!-- 1 · Platform & Architectural Foundations -->
+    <div class="section">
+      <div class="section-title">1 · Platform &amp; Architectural Foundations</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Config driven</td><td class="requirement">Via GBQ tables</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Price freshness schedules</td><td class="requirement">Via GBQ config</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes">Via lag time log</td></tr>
+          <tr><td class="capability">Observability dashboard</td><td class="requirement">Using fetching errors</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Recent GBQ AI work</td></tr>
+          <tr><td class="capability">Simplified management</td><td class="requirement">Group schedules into date ranges</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Observable system lag</td><td class="requirement">Time between collection and operational storage</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 2 · Pricing Capabilities -->
+    <div class="section">
+      <div class="section-title">2 · Pricing Capabilities</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Exports prices to CHIPS</td><td class="requirement">Exports from GBQ via CSV</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Only for parking</td></tr>
+          <tr><td class="capability">Support main products</td><td class="requirement">Carpark, hotel, lounge, fasttrack</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Support addons</td><td class="requirement">—</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Support hotel with onsite parking</td><td class="requirement">—</td><td><span class="status-pill status-notstarted">⚪ Not Started</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Reduction of supplier calls</td><td class="requirement">Using a deduplicated queue</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Closing out supply</td><td class="requirement">Using supplier no-availability responses</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Only fetch stale prices</td><td class="requirement">Using price freshness</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Consistent search expansion</td><td class="requirement">Simple using only price freshness</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">FIFO Searching</td><td class="requirement">Via simple queue</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Collected supply is configurable</td><td class="requirement">Via GBQ</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+          <tr><td class="capability">Rate limiting</td><td class="requirement">As an overall config</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">Should be via supplier</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3 · Storage Capabilities -->
+    <div class="section">
+      <div class="section-title">3 · Storage Capabilities</div>
+      <table>
+        <thead><tr><th>Capability</th><th>Requirement</th><th>Status</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td class="capability">Generating CSV</td><td class="requirement">Using our agreed standard</td><td><span class="status-pill status-progress">🔵 In Progress</span></td><td class="notes">For parking and lounge</td></tr>
+          <tr><td class="capability">Generate diffs</td><td class="requirement">Changes between exports</td><td><span class="status-pill status-done">🟢 Done</span></td><td class="notes"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 4 · Coverage -->
+    <div class="section">
+      <div class="section-title">4 · Coverage by Product</div>
+      <table class="cov-matrix">
+        <thead>
+          <tr>
+            <th>Operation</th>
+            <th>Carpark</th>
+            <th>Hotels</th>
+            <th>Lounges</th>
+            <th>Fastrack</th>
+            <th>Addons</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Search</td>
+            <td><span class="status-pill status-done">🟢 Done</span></td>
+            <td><span class="status-pill status-notstarted">⚪ Not Started</span></td>
+            <td><span class="status-pill status-done">🟢 Done</span></td>
+            <td><span class="status-pill status-notstarted">⚪ Not Started</span></td>
+            <td><span class="status-pill status-progress">🔵 In Progress</span></td>
+          </tr>
+          <tr>
+            <td>Export</td>
+            <td><span class="status-pill status-done">🟢 Done</span></td>
+            <td><span class="status-pill status-notstarted">⚪ Not Started</span></td>
+            <td><span class="status-pill status-progress">🔵 In Progress</span></td>
+            <td><span class="status-pill status-notstarted">⚪ Not Started</span></td>
+            <td><span class="status-pill status-progress">🔵 In Progress</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /tab-pc -->
+
+</div><!-- /content-wrap -->
+
+<script>
+  const btns   = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      panels.forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById('tab-' + target).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

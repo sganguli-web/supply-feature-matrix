@@ -1,0 +1,3 @@
+# Ignore the source Excel file — only the built HTML is deployed
+*.xlsx
+.DS_Store
